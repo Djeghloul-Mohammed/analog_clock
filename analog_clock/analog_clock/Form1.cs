@@ -34,6 +34,27 @@ namespace analog_clock
         private void t_tick(object sender, EventArgs e)
         {
             g = Graphics.FromImage(bmp);
+            int ss = DateTime.Now.Second;
+            int mm = DateTime.Now.Minute;
+            int hh = DateTime.Now.Hour;
+
+            int[] handcoord = new int[2];
+            g.Clear(Color.White);
+            g.DrawEllipse(new Pen(Color.Black, 1f), 0, 0, width, height);
+            g.DrawString("12", new Font("arial", 12), Brushes.Black, new Point(140, 2));
+            g.DrawString("3", new Font("arial", 12), Brushes.Black, new Point(286, 140)); 
+            g.DrawString("6", new Font("arial", 12), Brushes.Black, new Point(142, 282));
+            g.DrawString("9", new Font("arial", 12), Brushes.Black, new Point(0,140));
+            handcoord = mscoord(ss, sechand);
+            g.DrawLine(new Pen(Color.Red, 1f), new Point(cx,cy), new Point(handcoord[1]));
+            handcoord = mscoord(mm, minhand);
+            g.DrawLine(new Pen(Color.Black, 2f), new Point(cx, cy), new Point(handcoord[1]));
+            handcoord =hrcoord(hh%12,mm, hrhand);
+            g.DrawLine(new Pen(Color.Gray, 3f), new Point(cx, cy), new Point(handcoord[1]));
+            pictureBox1.Image = bmp;
+            this.Text
+                = "analog clock-" +hh+":"+mm+":"+ss;
+            g.Dispose();
         }
         private int[] mscoord(int val, int hlen)
         {
